@@ -88,7 +88,7 @@ def sumbit():
 myfont = Font(family="times", size=13)
 myfont1 = Font(family="times", size=16)
 
-title_label = Label(m, text="Akash Technologies \nEnquiry Form", fg="red", font=myfont, justify='center',
+title_label = Label(m, text="Besant Technologies \nEnquiry Form", fg="red", font=myfont, justify='center',
                     anchor='center')
 title_label.grid(row=0, column=1, ipady=15, pady=9, ipadx=50)
 
