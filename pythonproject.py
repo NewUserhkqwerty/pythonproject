@@ -6,7 +6,7 @@ import os
 import pyodbc
 
 m = Tk()
-m.title('Akash Technologies')
+m.title('Besant Technologies')
 m.geometry("1000x700")
 m.configure(bg="lightblue")
 
