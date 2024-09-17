@@ -41,55 +41,81 @@ def sumbit():
 
         cursor.execute('USE DP10')
         print('Connected successfully and using database DP10')
+        Databaseconnection()
+def Databaseconnection():
+    connection = None
+    try:
+        # Connect to the database
+        connection = pyodbc.connect(
+            'DRIVER={SQL Server};Server=DESKTOP-51TEJF4;Database=DP1;Trusted_Connection=True')
+        connection.autocommit = True
+        cursor = connection.cursor()
 
-        create_table_query = '''
-                IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Emp4' AND xtype='U')
-                CREATE TABLE Emp4 (
-                    [Date] DATE,
-                    [Name] VARCHAR(100),
-                    [Mobile No] VARCHAR(15),
-                    [Alternate No] VARCHAR(15),
-                    [Email id] VARCHAR(100),
-                    [Address] VARCHAR(255),
-                    [Course Interested] VARCHAR(100),
-                    [Batch Preferred] INT,
-                    [How You Came To Know Us] VARCHAR(100),
-                    [Are You Experienced or Fresher] VARCHAR(50),
-                    [Contact Person From Besant Technologies] VARCHAR(100),
-                    [Counselor] VARCHAR(100),
-                    [Fees] INT,
-                    [Comment] VARCHAR(255)
-                )
-                '''
-        cursor.execute(create_table_query)
+        # Use the desired database
+        cursor.execute('USE DP10')
+        print('Connected successfully and using database DP10')
 
-        insert_query = '''INSERT INTO Emp4 ([Date], [Name], [Mobile No], [Alternate No], [Email id], [Address],
-        [Course Interested], [Batch Preferred], [How You Came To Know Us],
-        [Are You Experienced or Fresher], [Contact Person From Besant Technologies],
-        [Counselor], [Fees], [Comment]) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+        # Check if the table exists and create it if not
+        cursor.execute('''
+                IF OBJECT_ID('dbo.Emp4', 'U') IS NULL
+                BEGIN
+                    CREATE TABLE dbo.Emp4 (
+                        [Date] DATE,
+                        [Name] VARCHAR(100),
+                        [Mobile No] VARCHAR(15),
+                        [Alternate No] VARCHAR(15),
+                        [Email id] VARCHAR(100),
+                        [Address] VARCHAR(255),
+                        [Course Interested] VARCHAR(100),
+                        [Batch Preferred] INT,
+                        [How You Came To Know Us] VARCHAR(100),
+                        [Are You Experienced or Fresher] VARCHAR(50),
+                        [Contact Person From Besant Technologies] VARCHAR(100),
+                        [Counselor] VARCHAR(100),
+                        [Fees] INT,
+                        [Comment] VARCHAR(255)
+                    )
+                END
+            ''')
+        print('Table checked and created if not exists')
 
+        insert_query = '''
+                INSERT INTO dbo.Emp4 ([Date], [Name], [Mobile No], [Alternate No], [Email id], [Address],
+                [Course Interested], [Batch Preferred], [How You Came To Know Us],
+                [Are You Experienced or Fresher], [Contact Person From Besant Technologies],
+                [Counselor], [Fees], [Comment]) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
         data1 = (
-        date.get(), name.get(), mobile.get(), Alternate.get(), email.get(), address.get(), Course.get(), batch.get(),
-        batch_know.get(), fresher.get(), Besant.get(), counselor.get(), fees.get(), comment.get())
+            date.get(), name.get(), mobile.get(), Alternate.get(), email.get(), address.get(), Course.get(),
+            batch.get(),
+            batch_know.get(), fresher.get(), Besant.get(), counselor.get(), fees.get(), comment.get())
 
         cursor.execute(insert_query, data1)
-        print("Data  successfully insert in the database")
 
+        print("Data successfully inserted into the database")
 
-    except pyodbc.Error as msg:
-        print('Error:', msg)
+    except pyodbc.Error as e:
+        print('Database error:', e)
 
     finally:
-        if connection:
+        if connection is not None:
             connection.close()
-            print("Database connection close ")
+            print("Database connection closed")
+
+
+
+       
+
+def quit_application():
+    if messagebox.askokcancel("Quit", "Do you really want to quit?"):
+        m.destroy()
+
 
 
 myfont = Font(family="times", size=13)
 myfont1 = Font(family="times", size=16)
 
 title_label = Label(m, text="Besant Technologies \nEnquiry Form", fg="red", font=myfont, justify='center',
-                    anchor='center')
+                    anchor='center',bd=2,relief="solid")
 title_label.grid(row=0, column=1, ipady=15, pady=9, ipadx=50)
 
 label = Label(m, text="Date :", font=myfont, bg="lightblue", fg="black", anchor="w", justify="left", width=34)
@@ -166,16 +192,20 @@ labe12.grid(row=14, column=0)
 comment = Entry(m, width=40, font=myfont1)
 comment.grid(row=14, column=1, padx=10, pady=2)
 
-enquiry = Checkbutton(m, text="Enquiry")
-enquiry.grid(row=15, column=2, padx=10, pady=10, sticky=W)
+#enquiry = Checkbutton(m, text="Enquiry")
+#enquiry.grid(row=15, column=2, padx=10, pady=10, sticky=W)
 
-registration = Checkbutton(m, text="Registration")
-registration.grid(row=15, column=1, padx=10, pady=10, sticky=W)
+#registration = Checkbutton(m, text="Registration")
+#registration.grid(row=15, column=1, padx=10, pady=10, sticky=W)
 
-sumbit = Button(m, text="Sumbit", bg="green", fg="white", padx=20, pady=5, width=5, command=sumbit)
-sumbit.grid(row=16, column=1, sticky=W)
+sumbit=Button(m,text="Sumbit",bg="green",fg="white",padx=15,pady=3,width=5,command=sumbit)
+sumbit.grid(row=16,column=1,padx=10,pady=3)
 
-clear = Button(m, text="Quit", bg="red", fg="white", padx=20, pady=5, width=5)
-clear.grid(row=16, column=2, sticky=W)
+clear=Button(m,text="Quit",bg="red",fg="white",padx=15,pady=3,width=5,command=quit_application)
+clear.grid(row=17,column=1 ,padx=10,pady=7)
+
+
+
+
 
 m.mainloop()
