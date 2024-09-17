@@ -45,6 +45,7 @@ def sumbit():
         
 def Databaseconnection():
     connection = None
+    cursor = None
     try:
         # Connect to the database
         connection = pyodbc.connect(
