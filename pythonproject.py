@@ -98,9 +98,18 @@ def Databaseconnection():
         print('Database error:', e)
 
     finally:
-        if connection is not None:
-            connection.close()
-            print("Database connection closed")
+        if cursor:
+            try:
+                cursor.close()
+                print('Cursor also closed ')
+            except Exception as e:
+                print(f"Error closing cursor: {e}")
+        if connection:
+            try:
+                connection.close()
+            except Exception as e:
+                print(f"Error closing connection: {e}")
+        print("Database connection closed")
 
 
 
