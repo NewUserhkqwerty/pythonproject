@@ -42,6 +42,7 @@ def sumbit():
         cursor.execute('USE DP10')
         print('Connected successfully and using database DP10')
         Databaseconnection()
+        
 def Databaseconnection():
     connection = None
     try:
@@ -62,10 +63,10 @@ def Databaseconnection():
                     CREATE TABLE dbo.Emp4 (
                         [Date] DATE,
                         [Name] VARCHAR(100),
-                        [Mobile No] VARCHAR(15),
-                        [Alternate No] VARCHAR(15),
+                        [Mobile No] VARCHAR(50),      # [Mobile No]BIGINT
+                        [Alternate No] VARCHAR(50),   # [Alternate No]BIGINT
                         [Email id] VARCHAR(100),
-                        [Address] VARCHAR(255),
+                        [Address] VARCHAR(50),
                         [Course Interested] VARCHAR(100),
                         [Batch Preferred] INT,
                         [How You Came To Know Us] VARCHAR(100),
